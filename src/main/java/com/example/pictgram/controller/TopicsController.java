@@ -46,6 +46,9 @@ import com.example.pictgram.form.CommentForm;
 import java.util.Locale;
 import org.springframework.context.MessageSource;
 
+import org.thymeleaf.context.Context;
+import com.example.pictgram.service.SendMailService;
+
 @Controller
 public class TopicsController {
 
@@ -65,6 +68,9 @@ public class TopicsController {
 
     @Value("${image.local:false}")
     private String imageLocal;
+    
+    @Autowired
+    private SendMailService sendMailService;
 
     @GetMapping(path = "/topics")
     public String index(Principal principal, Model model) throws IOException {
@@ -193,7 +199,13 @@ public class TopicsController {
         redirAttrs.addFlashAttribute("hasMessage", true);
         redirAttrs.addFlashAttribute("class", "alert-info");
         redirAttrs.addFlashAttribute("message", messageSource.getMessage("topics.create.flash.2", new String[] {}, locale));
-
+        
+        Context context = new Context();
+        context.setVariable("title", "【Pictgram】新規投稿");
+        context.setVariable("name", user.getUsername());
+        context.setVariable("description", entity.getDescription());
+        sendMailService.sendMail(context);
+        
         return "redirect:/topics";
     }
 
