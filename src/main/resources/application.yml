@@ -15,4 +15,5 @@ spring:
 image:
   local: true
   
-    
+  onesignal:
+  id: ${onesignal.id}
