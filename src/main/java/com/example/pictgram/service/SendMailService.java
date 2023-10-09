@@ -36,8 +36,7 @@ public class SendMailService {
                 helper.setSubject((String) context.getVariable("title"));
                 helper.setText(getMailBody("email", context), true);
             }
-        });
-        }
+        
         private String getMailBody(String templateName, Context context) {
         	SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         	
@@ -55,4 +54,6 @@ public class SendMailService {
         	        templateResolver.setCacheable(true);
         	        return templateResolver;
         	    }
+        });
+    }
     }
